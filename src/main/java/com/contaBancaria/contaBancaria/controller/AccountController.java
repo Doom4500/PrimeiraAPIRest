@@ -24,17 +24,14 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping
-
     @Transactional
     public ResponseEntity<Account> create(@RequestBody @Valid CreateAccountDTO createAccountDTO, UriComponentsBuilder uriBuilder) throws DuplicateCpfException, DuplicateEmailException {
         try {
             Account newAccount = accountService.create(createAccountDTO);
             URI uri = uriBuilder.path("/{id}").buildAndExpand(newAccount.getId()).toUri();
             return ResponseEntity.created(uri).body(newAccount);
-
-        }catch(DuplicateCpfException exception){
+        }  catch(DuplicateCpfException | DuplicateEmailException  exception){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,exception.getMessage(),exception);
-
         }
 
     }
