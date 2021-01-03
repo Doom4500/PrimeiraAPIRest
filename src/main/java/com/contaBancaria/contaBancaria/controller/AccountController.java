@@ -1,11 +1,9 @@
 package com.contaBancaria.contaBancaria.controller;
 
 import com.contaBancaria.contaBancaria.dto.CreateAccountDTO;
-import com.contaBancaria.contaBancaria.errors.InvalidCPF;
+import com.contaBancaria.contaBancaria.errors.InvalidCpfException;
 import com.contaBancaria.contaBancaria.model.Account;
-import com.contaBancaria.contaBancaria.repository.AccountRepository;
 import com.contaBancaria.contaBancaria.service.AccountService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,18 +22,15 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @Autowired
-    private AccountRepository accountRepository;
-
     @PostMapping
     @Transactional
-    public ResponseEntity<Account> create(@RequestBody @Valid CreateAccountDTO createAccountDTO, UriComponentsBuilder uriBuilder) throws InvalidCPF {
+    public ResponseEntity<Account> create(@RequestBody @Valid CreateAccountDTO createAccountDTO, UriComponentsBuilder uriBuilder) throws InvalidCpfException {
         try {
             Account newAccount = accountService.create(createAccountDTO);
             URI uri = uriBuilder.path("/{id}").buildAndExpand(newAccount.getId()).toUri();
             return ResponseEntity.created(uri).body(newAccount);
 
-        }catch(InvalidCPF exception){
+        }catch(InvalidCpfException exception){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,exception.getMessage(),exception);
 
         }
@@ -44,7 +39,7 @@ public class AccountController {
 
     @GetMapping
     public ResponseEntity<List<Account>> list(String name){
-        List<Account> accountList = accountService.findAll(name);
+        List<Account> accountList = accountService.find(name);
         return ResponseEntity.ok(accountList);
 
     }

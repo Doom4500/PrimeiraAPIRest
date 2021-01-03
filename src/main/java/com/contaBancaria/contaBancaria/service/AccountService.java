@@ -1,7 +1,7 @@
 package com.contaBancaria.contaBancaria.service;
 
 import com.contaBancaria.contaBancaria.dto.CreateAccountDTO;
-import com.contaBancaria.contaBancaria.errors.InvalidCPF;
+import com.contaBancaria.contaBancaria.errors.InvalidCpfException;
 import com.contaBancaria.contaBancaria.model.Account;
 import com.contaBancaria.contaBancaria.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public List<Account> findAll(String name){
+    public List<Account> find(String name){
         List<Account> accounts;
         if(name == null){
             accounts = accountRepository.findAll();
@@ -27,11 +27,11 @@ public class AccountService {
         return accounts;
     }
 
-    public Account create(CreateAccountDTO createAccountDTO) throws InvalidCPF {
+    public Account create(CreateAccountDTO createAccountDTO) throws InvalidCpfException {
         Optional<Account> accountCpf = accountRepository.findByCpf(createAccountDTO.getCpf());
 
         if(accountCpf.isPresent()){
-            throw new InvalidCPF();
+            throw new InvalidCpfException();
         }
         Account newAccount = createAccountDTO.toAccount();
         accountRepository.save(newAccount);

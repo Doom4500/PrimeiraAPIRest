@@ -18,13 +18,6 @@ public class Account {
     @Column(nullable = false) @Temporal(TemporalType.DATE)
     private Date birthDate;
 
-    public Account(){}
-    public Account(String email, String cpf, Date birthDate){
-        this.email = email;
-        this.cpf = cpf;
-        this.birthDate = birthDate;
-    }
-
     public String getEmail() {return email;}
 
     public void setEmail(String email) {this.email = email;}

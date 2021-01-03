@@ -18,13 +18,6 @@ public class CreateAccountDTO {
     @NotNull @Past
     private Date birthDate;
 
-    public CreateAccountDTO(@NotNull String name, @Email @NotNull String email, @CPF @NotNull String cpf, @NotNull @Past Date birthDate) {
-        this.name = name;
-        this.email = email;
-        this.cpf = cpf;
-        this.birthDate = birthDate;
-    }
-
     public Account toAccount(){
         Account account = new Account();
         account.setCpf(this.cpf);
@@ -37,16 +30,8 @@ public class CreateAccountDTO {
         return cpf;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public void setEmail(String email) {
@@ -55,10 +40,6 @@ public class CreateAccountDTO {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
     }
 
     public void setBirthDate(Date birthDate) {
