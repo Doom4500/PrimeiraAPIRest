@@ -1,7 +1,8 @@
 package com.contaBancaria.contaBancaria.controller;
 
 import com.contaBancaria.contaBancaria.dto.CreateAccountDTO;
-import com.contaBancaria.contaBancaria.errors.InvalidCpfException;
+import com.contaBancaria.contaBancaria.errors.DuplicateCpfException;
+import com.contaBancaria.contaBancaria.errors.DuplicateEmailException;
 import com.contaBancaria.contaBancaria.model.Account;
 import com.contaBancaria.contaBancaria.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,15 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping
+
     @Transactional
-    public ResponseEntity<Account> create(@RequestBody @Valid CreateAccountDTO createAccountDTO, UriComponentsBuilder uriBuilder) throws InvalidCpfException {
+    public ResponseEntity<Account> create(@RequestBody @Valid CreateAccountDTO createAccountDTO, UriComponentsBuilder uriBuilder) throws DuplicateCpfException, DuplicateEmailException {
         try {
             Account newAccount = accountService.create(createAccountDTO);
             URI uri = uriBuilder.path("/{id}").buildAndExpand(newAccount.getId()).toUri();
             return ResponseEntity.created(uri).body(newAccount);
 
-        }catch(InvalidCpfException exception){
+        }catch(DuplicateCpfException exception){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,exception.getMessage(),exception);
 
         }

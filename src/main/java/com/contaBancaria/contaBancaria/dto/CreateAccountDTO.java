@@ -29,6 +29,7 @@ public class CreateAccountDTO {
     public String getCpf() {
         return cpf;
     }
+    public String getEmail() {return email;}
 
     public void setName(String name) {
         this.name = name;
@@ -45,4 +46,6 @@ public class CreateAccountDTO {
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
+
+
 }
